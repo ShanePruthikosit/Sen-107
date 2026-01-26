@@ -7,31 +7,140 @@
  #include <stdlib.h>
  #include <string.h>
 
+ typedef struct QNode{
+    char* name;
+	int rank;
+	int count;
+	struct QNode* next;
+} QNode;
+
+//Queue structure
+typedef struct QueueStruct{
+	QNode* front;
+	QNode* rear;
+	int rank;
+	struct QueueStruct* next;
+} QueueStruct;
+
+typedef struct {
+	QueueStruct* top;
+} StackStruct;
+
+StackStruct* Stack;
+
+
+
+void Enqueue(int count, char name[])
+{
+	QueueStruct* Queue = Stack -> top;
+	QNode* newNode = (QNode*)malloc(sizeof(QNode));
+	newNode -> count = count;
+	newNode -> name = (char*)malloc(sizeof(strlen(name) + 1));
+	strcpy(newNode -> name, name);
+	newNode -> next = NULL;
+	if(Queue -> rear == NULL)
+	{
+		Queue -> front = newNode;
+		Queue -> rear = newNode;
+	}
+	else
+	{
+		Queue -> rear -> next = newNode;
+		Queue -> rear = newNode;
+	}
+	printf("Accepted\n");
+}	
+
+void Pop()
+{
+	QueueStruct* temp = Stack -> top;
+	Stack -> top = Stack -> top -> next;
+
+	free(temp);
+}
+
+
+void Dequeue()
+{
+	QueueStruct* Queue = Stack -> top;
+	QNode* temp = Queue -> front;
+	printf("Taxi departs with %s and their party of %i\n", temp -> name, temp -> count);
+	Queue -> front = Queue -> front -> next;
+	if(Queue -> front == NULL)
+	{
+		Pop();
+	}
+   free(temp->name);  
+   free(temp);
+}
+
+void Push(StackStruct* Stack,int rank, int count, char name[])
+{
+	QueueStruct* newQueue = (QueueStruct*)malloc(sizeof(QueueStruct));
+	newQueue -> front = NULL;
+	newQueue -> rear = NULL;
+	newQueue -> next = Stack -> top;
+	newQueue -> rank = rank;
+	Stack -> top = newQueue;
+	Enqueue(count, name);
+}
+
  /* Handle an arrival of a taxi. 
   */
 void taxiArrival()
 {
-	// ************** Please change the code below to your code **************
- 	printf("Please add your code to handle taxi arrival.\n");
+	QueueStruct* Queue = Stack -> top;
+	if (Queue == NULL)
+	{
+		printf("Empty Queue\n");
+	}
+	else
+	{
+		Dequeue();
+	}
 }
  
- /* Handles an arrival of a new party.
-  * Arguments:
-  * 		rank 		- the status of the party assumed to be one of 1, 2, 3, 4, 5
-  *			count		- the number of people in the party
-  *			name 		- the name of the party
-  */
 void partyArrival(int rank, int count, char name[])
 {
-	// ************** Please change the code below to your code **************
- 	printf("Please add your code to handle party arrival.\n");
+	QueueStruct* Queue = Stack -> top;
+	if (Queue == NULL || Queue -> rank < rank)
+	{
+		Push(Stack, rank, count, name);
+	}
+	else if (Queue -> rank == rank)
+	{
+		Enqueue(count, name);
+	}
+	else
+	{
+		printf("Rejected\n");
+	}
+	
 }	
 
 /* Free the contents of the datastructures used */
 void freeAll()
 {
-	// ************** Please change the code below to your code **************
-	printf("Please add your code to free all datastructures.\n");
+    while (Stack->top != NULL)
+    {
+        QueueStruct* currentQueue = Stack->top;
+        
+        // Free all nodes in the current queue
+        while (currentQueue->front != NULL)
+        {
+            QNode* temp = currentQueue->front;
+            currentQueue->front = currentQueue->front->next;
+            free(temp->name);
+            free(temp);
+        }
+        
+        // Remove the queue from the stack
+        Stack->top = Stack->top->next;
+        free(currentQueue);
+    }
+    
+    // Free the stack itself
+    free(Stack);
 }
 
 /* Main function loops for however many timesteps is specified, 
@@ -39,8 +148,11 @@ void freeAll()
  */
 int main(int argc, char* argv[])
 {
+	Stack = (StackStruct*)malloc(sizeof(StackStruct));
+	Stack->top = NULL;
+
  	int timesteps; // The total number of timesteps
- 	char input[10]; // For the input prefix "Taxi" or "Party"
+ 	char input[25]; // For the input prefix "Taxi" or "Party"
  	char name[25]; // The party name
  	int rank; // The party's status
  	int count; // The number of people in the party
