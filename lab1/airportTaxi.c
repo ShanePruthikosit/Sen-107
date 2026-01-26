@@ -2,19 +2,20 @@
  * Template for Lab 1.
  *
  * Created by Pasin Manurangsi, 2025-01-08
+ * Edited by Sunidhi Pruthikosit, 2026-01-26
  */
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
 
-/* Declare the node structure below
- */
+//node structure
  typedef struct Node{
     char* name;
 	int count;
 	struct Node* next;
 } Node;
 
+//Queue structure
 typedef struct {
 	Node* front;
 	Node* rear;
@@ -23,6 +24,9 @@ typedef struct {
 QueueStruct* Queue;
 
 /* Create the Enqueue function: add a taxi party to the queue.
+  * Arguments:
+  *			count		- the number of people in the party
+  *			name 		- the name of the party
  */
  void Enqueue(int count, char name[])
  {
@@ -54,6 +58,7 @@ QueueStruct* Queue;
 	 {
 		 Queue -> rear = NULL;
 	 }
+    free(temp->name);  
 	 free(temp);
  }
 
