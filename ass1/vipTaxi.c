@@ -2,11 +2,13 @@
  * Template for Fundamental Data Structures, skill 00010.
  *
  * Created by Pasin Manurangsi, 2025-01-08
+ * Modified by Sunidhi Pruthikosit, 2025-01-09
  */
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
 
+ //Queue Node structure
  typedef struct QNode{
     char* name;
 	int rank;
@@ -22,6 +24,7 @@ typedef struct QueueStruct{
 	struct QueueStruct* next;
 } QueueStruct;
 
+//Stack structure
 typedef struct {
 	QueueStruct* top;
 } StackStruct;
@@ -29,7 +32,7 @@ typedef struct {
 StackStruct* Stack;
 
 
-
+// Adds a new party to the queue on top of the stack
 void Enqueue(int count, char name[])
 {
 	QueueStruct* Queue = Stack -> top;
@@ -51,6 +54,7 @@ void Enqueue(int count, char name[])
 	printf("Accepted\n");
 }	
 
+//Pops the queue off from the stack
 void Pop()
 {
 	QueueStruct* temp = Stack -> top;
@@ -59,7 +63,7 @@ void Pop()
 	free(temp);
 }
 
-
+// Removes a party from the front of the queue on top of the stack
 void Dequeue()
 {
 	QueueStruct* Queue = Stack -> top;
@@ -74,6 +78,7 @@ void Dequeue()
    free(temp);
 }
 
+// Adds a new queue to the stack
 void Push(StackStruct* Stack,int rank, int count, char name[])
 {
 	QueueStruct* newQueue = (QueueStruct*)malloc(sizeof(QueueStruct));
@@ -85,8 +90,7 @@ void Push(StackStruct* Stack,int rank, int count, char name[])
 	Enqueue(count, name);
 }
 
- /* Handle an arrival of a taxi. 
-  */
+ // Handle an arrival of a taxi. 
 void taxiArrival()
 {
 	QueueStruct* Queue = Stack -> top;
@@ -99,7 +103,8 @@ void taxiArrival()
 		Dequeue();
 	}
 }
- 
+
+//handle an arrival of a party.
 void partyArrival(int rank, int count, char name[])
 {
 	QueueStruct* Queue = Stack -> top;
