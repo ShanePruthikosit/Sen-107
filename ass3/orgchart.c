@@ -142,43 +142,6 @@ OrgNode* findOrgNode(char* name, char* employeeId)
     return NULL;
 }
 
-/* Print the org chart recursively in pre-order.
- * Arguments:
- *   node  - current node to print
- *   level - depth level for indentation (3 dots per level)
- */
-void printOrgHelper(OrgNode* node, int level)
-{
-    if (node == NULL)
-    {
-        return;
-    }
-    for (int i = 0; i < level; i++)
-    {
-        printf("...");
-    }
-    printf("%s %s %s\n", node->name, node->employeeId,
-           node->jobTitle);
-    printOrgHelper(node->firstChild, level + 1);
-    printOrgHelper(node->nextSibling, level);
-}
-
-/* Print sorted list by in-order traversal of BST.
- * Arguments:
- *   node - current BST node
- */
-void printSortedHelper(BSTNode* node)
-{
-    if (node == NULL)
-    {
-        return;
-    }
-    printSortedHelper(node->left);
-    printf("%s %s %s\n", node->orgRef->name,
-           node->orgRef->employeeId,
-           node->orgRef->jobTitle);
-    printSortedHelper(node->right);
-}
 
 /* Free all nodes in the BST.
  * Arguments:
@@ -260,17 +223,41 @@ void addEmployee(char* name, char* employeeId, char* jobTitle, char* supervisorN
 }
 
 /* Prints the corporate hierarchy structure, pre-order
+ * Arguments:
+ *   node  - current node to print
+ *   level - depth level for indentation (3 dots per level)
  */
-void printCorporateHierarchy()
+void printCorporateHierarchy(OrgNode* node, int level)
 {
-    printOrgHelper(orgRoot, 0);
+    if (node == NULL)
+    {
+        return;
+    }
+    for (int i = 0; i < level; i++)
+    {
+        printf("...");
+    }
+    printf("%s %s %s\n", node->name, node->employeeId,
+           node->jobTitle);
+    printCorporateHierarchy(node->firstChild, level + 1);
+    printCorporateHierarchy(node->nextSibling, level);
 }
 
-/* Prints the sorted list of employees
+/* Prints the sorted list of employees by in-order traversal
+ * Arguments:
+ *   node - current BST node
  */
-void printSortedList()
+void printSortedList(BSTNode* node)
 {
-    printSortedHelper(bstRoot);
+    if (node == NULL)
+    {
+        return;
+    }
+    printSortedList(node->left);
+    printf("%s %s %s\n", node->orgRef->name,
+           node->orgRef->employeeId,
+           node->orgRef->jobTitle);
+    printSortedList(node->right);
 }
 
 /* Searches for an employee in the corporate hierarchy structure
@@ -327,7 +314,7 @@ int main()
         addEmployee(name, employeeId, jobTitle, supervisorName, supervisorId);
     }
 
-    printCorporateHierarchy();
+    printCorporateHierarchy(orgRoot, 0);
 
 
     for (int i = 0; i < numQuestions; i++)
@@ -336,7 +323,7 @@ int main()
         searchEmployee(name, employeeId);
     }
 
-    printSortedList();
+    printSortedList(bstRoot);
 
     freeAll();
 
