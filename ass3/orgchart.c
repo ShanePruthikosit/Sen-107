@@ -3,6 +3,7 @@
  * Build a corporate hierarchy structure and sorted binary tree
  *
  *  Created by Chavakorn Arunkunarax and Phasit Thanitkul, 2025-01-12
+ *  Altered by Sunidhi Pruthikosit, 2026-02-05
  */
 
 #include <stdio.h>
@@ -37,6 +38,7 @@ typedef struct _BSTNode
 
 OrgNode* orgRoot = NULL; //root of the organization chart
 BSTNode* bstRoot = NULL;   //root of the binary search tree
+
 /* Create a new organization chart node.
  * Arguments:
  *   name       - employee name
@@ -121,6 +123,66 @@ BSTNode* searchBST(BSTNode* root, char* key)
     }
 }
 
+/* Find the minimum node in a BST subtree.
+ * Arguments:
+ *   node - root of subtree to search
+ * Returns pointer to the node with the smallest key.
+ */
+BSTNode* findMinBST(BSTNode* node)
+{
+    while (node->left != NULL)
+    {
+        node = node->left;
+    }
+    return node;
+}
+
+/* Remove a node with the given key from the BST.
+ * Arguments:
+ *   root - pointer to the current BST root
+ *   key  - the sorting key to remove
+ * Returns the (possibly updated) root of the BST.
+ */
+BSTNode* removeBST(BSTNode* root, char* key)
+{
+    int cmp = 0;           //comparison result
+    BSTNode* temp = NULL;  //temporary node for swapping
+
+    if (root == NULL)
+    {
+        return NULL;
+    }
+    cmp = strcmp(key, root->key);
+    if (cmp < 0)
+    {
+        root->left = removeBST(root->left, key);
+    }
+    else if (cmp > 0)
+    {
+        root->right = removeBST(root->right, key);
+    }
+    else
+    {
+        if (root->left == NULL)
+        {
+            temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if (root->right == NULL)
+        {
+            temp = root->left;
+            free(root);
+            return temp;
+        }
+        temp = findMinBST(root->right);
+        strcpy(root->key, temp->key);
+        root->orgRef = temp->orgRef;
+        root->right = removeBST(root->right, temp->key);
+    }
+    return root;
+}
+
 /* Find an OrgNode by name and employeeId using the BST.
  * Arguments:
  *   name       - employee name
@@ -185,6 +247,20 @@ void addEmployee(char* name, char* employeeId, char* jobTitle, char* supervisorN
         (strcmp(supervisorId, "--") == 0))
     {
         newNode = createOrgNode(name, employeeId, jobTitle);
+        if (orgRoot != NULL)
+        {
+            newNode->firstChild = orgRoot->firstChild;
+            child = newNode->firstChild;
+            while (child != NULL)
+            {
+                child->parent = newNode;
+                child = child->nextSibling;
+            }
+            strcpy(key, orgRoot->name);
+            strcat(key, orgRoot->employeeId);
+            bstRoot = removeBST(bstRoot, key);
+            free(orgRoot);
+        }
         orgRoot = newNode;
     }
     else

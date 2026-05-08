@@ -1,9 +1,21 @@
-7
-0
-Root 2000001 CEO -- --
-A 2000002 Staff Root 2000001
-B 2000003 Staff Root 2000001
-C 2000004 Staff Root 2000001
-D 2000005 Staff Root 2000001
-Bad1 2000006 Staff Missing 9999999
-Bad2 2000007 Staff AlsoMissing 8888888
+14
+5
+Alice 1000001 CEO -- --
+Bob 1000002 VP Alice 1000001
+Charlie 1000003 Manager Bob 1000002
+Dave 1000004 Dev Charlie 1000003
+Eve 1000005 Intern Dave 1000004
+Frank 1000006 Director Alice 1000001
+Ghost 1000007 Analyst Nobody 9999999
+Alice 1000008 Clerk Frank 1000006
+Zara 1000009 Tester Charlie 1000003
+NewBoss 1000010 CEO -- --
+Bob 1000011 Admin Frank 1000006
+Bad 1000012 Staff Ghost 1000007
+Kate 1000013 Lead Bob 1000002
+Kate 1000014 Junior Frank 1000006
+NewBoss 1000010
+Eve 1000005
+Nobody 9999999
+Bob 1000011
+Charlie 1000003
