@@ -15,12 +15,12 @@
  */
 typedef struct _OrgNode
 {
-    char name[32];        /* employee name */
-    char employeeId[8];   /* employee ID */
-    char jobTitle[32];    /* job title */
-    struct _OrgNode* parent;      /* pointer to supervisor */
-    struct _OrgNode* firstChild;  /* pointer to first child */
-    struct _OrgNode* nextSibling; /* pointer to next sibling */
+    char name[32];        //employee name
+    char employeeId[8];   //employee ID 
+    char jobTitle[32];    //job title
+    struct _OrgNode* parent;      //pointer to supervisor
+    struct _OrgNode* firstChild;  //pointer to first child
+    struct _OrgNode* nextSibling; //pointer to next sibling
 } OrgNode;
 
 /* Node in the binary search tree.
@@ -29,15 +29,14 @@ typedef struct _OrgNode
  */
 typedef struct _BSTNode
 {
-    char key[40];             /* sorting key: name + employeeId */
-    OrgNode* orgRef;          /* pointer to org chart node */
-    struct _BSTNode* left;    /* left child */
-    struct _BSTNode* right;   /* right child */
+    char key[40];             //sorting key (name + employeeId)
+    OrgNode* orgRef;          //pointer to an org chart node
+    struct _BSTNode* left;    //left child
+    struct _BSTNode* right;   //right child
 } BSTNode;
 
-OrgNode* orgRoot = NULL;   /* root of the organization chart */
-BSTNode* bstRoot = NULL;   /* root of the binary search tree */
-
+OrgNode* orgRoot = NULL; //root of the organization chart
+BSTNode* bstRoot = NULL;   //root of the binary search tree
 /* Create a new organization chart node.
  * Arguments:
  *   name       - employee name
@@ -102,7 +101,7 @@ BSTNode* insertBST(BSTNode* root, char* key, OrgNode* orgRef)
  */
 BSTNode* searchBST(BSTNode* root, char* key)
 {
-    int cmp = 0; /* comparison result */
+    int cmp = 0; //comparison result
     if (root == NULL)
     {
         return NULL;
@@ -130,8 +129,8 @@ BSTNode* searchBST(BSTNode* root, char* key)
  */
 OrgNode* findOrgNode(char* name, char* employeeId)
 {
-    char key[40];          /* combined key for BST lookup */
-    BSTNode* result = NULL; /* search result */
+    char key[40];          //combined key for BST search
+    BSTNode* result = NULL;//search result from BST
     strcpy(key, name);
     strcat(key, employeeId);
     result = searchBST(bstRoot, key);
@@ -177,21 +176,19 @@ void freeOrg(OrgNode* node)
  */
 void addEmployee(char* name, char* employeeId, char* jobTitle, char* supervisorName, char* supervisorId)
 {
-    OrgNode* newNode = NULL;      /* the new employee node */
-    OrgNode* supervisor = NULL;   /* supervisor node pointer */
-    OrgNode* child = NULL;        /* for traversing children */
-    char key[40];                 /* combined key for BST */
+    OrgNode* newNode = NULL;      //new employee node
+    OrgNode* supervisor = NULL;   //supervisor node
+    OrgNode* child = NULL;        //for traversing supervisor's children
+    char key[40];                 //combined key for BST
 
     if ((strcmp(supervisorName, "--") == 0) &&
         (strcmp(supervisorId, "--") == 0))
     {
-        /* This is the root (CEO) */
         newNode = createOrgNode(name, employeeId, jobTitle);
         orgRoot = newNode;
     }
     else
     {
-        /* Find the supervisor in the org chart */
         supervisor = findOrgNode(supervisorName, supervisorId);
         if (supervisor == NULL)
         {
@@ -200,7 +197,7 @@ void addEmployee(char* name, char* employeeId, char* jobTitle, char* supervisorN
         }
         newNode = createOrgNode(name, employeeId, jobTitle);
         newNode->parent = supervisor;
-        /* Append as last child to preserve insertion order */
+
         if (supervisor->firstChild == NULL)
         {
             supervisor->firstChild = newNode;
@@ -216,7 +213,6 @@ void addEmployee(char* name, char* employeeId, char* jobTitle, char* supervisorN
         }
     }
 
-    /* Insert into BST */
     strcpy(key, name);
     strcat(key, employeeId);
     bstRoot = insertBST(bstRoot, key, newNode);
@@ -272,7 +268,6 @@ void searchEmployee(char* name, char* employeeId)
     }
     if (found->parent == NULL)
     {
-        /* This person is at the top of the chart */
         printf("%s\n", found->jobTitle);
     }
     else
