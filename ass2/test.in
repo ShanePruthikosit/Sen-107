@@ -1,63 +1,59 @@
-62
-A
-Add B A
-Add C A
-Add D B
-Add E B
-Add F C
-Add G C
-Add H D
-Add I D
-Add J E
+59
+Root
+Add A Root
+Add B Root
+Add C Root
+Add D A
+Add E A
+Add F B
+Descendant Root
 Descendant A
-Descendant B
-Descendant D
-Descendant J
+Descendant F
 Descendant Z
 Max
-Add K A
-Add L A
-Add M A
-Add N A
-Add O A
-Add P A
-Add Q A
-Add R A
-Add S A
-Add T A
-Add U H
-Add V U
-Add W V
+Add G0 C
+Add G1 C
+Add G2 C
+Add G3 C
+Add G4 C
+Add G5 C
+Add G6 C
+Add G7 C
+Add G8 C
+Add G9 C
+Add G10 C
+Add A Root
+Add B A
+Add X Unknown
+Add Root Root
+Descendant C
+Add Deep0 D
+Add Deep1 Deep0
+Add Deep2 Deep1
+Add Deep3 Deep2
+Add Deep4 Deep3
+Add Deep5 Deep4
+Add Deep6 Deep5
+Add Deep7 Deep6
+Add Deep8 Deep7
+Add Deep9 Deep8
+Add Deep10 Deep9
+Add Deep11 Deep10
+Add Deep12 Deep11
+Add Deep13 Deep12
+Add Deep14 Deep13
+Add Deep15 Deep14
+Add Deep16 Deep15
+Add Deep17 Deep16
+Add Deep18 Deep17
+Add Deep19 Deep18
 Max
-Descendant H
-Descendant U
-Descendant A
-Add X I
-Add Y I
-Add Z I
-Add AA I
-Add BB I
-Add CC I
-Add DD I
-Add EE I
-Add FF I
-Add GG I
-Add HH I
-Descendant I
-Add II J
-Add JJ J
-Add KK J
-Add LL J
-Add MM J
-Add NN J
-Add OO J
-Add PP J
-Add QQ J
-Add RR J
-Add SS J
-Descendant J
+Add X1 E
 Max
-Add WW W
+Add X2 X1
 Max
-Descendant V
-Descendant W
+Descendant D
+Descendant Deep0
+Descendant Deep19
+Add Lonely Deep19
+Descendant Lonely
