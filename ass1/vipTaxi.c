@@ -2,112 +2,150 @@
  * Template for Fundamental Data Structures, skill 00010.
  *
  * Created by Pasin Manurangsi, 2025-01-08
+ * Modified by Sunidhi Pruthikosit, 2025-01-09
  */
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
 
-//node structure
+ //Queue Node structure
  typedef struct QNode{
     char* name;
+	int rank;
 	int count;
 	struct QNode* next;
 } QNode;
 
 //Queue structure
-typedef struct {
+typedef struct QueueStruct{
 	QNode* front;
 	QNode* rear;
-	QueueStruct* nextQueue;
+	int rank;
+	struct QueueStruct* next;
 } QueueStruct;
 
-int highestRank; 
+//Stack structure
+typedef struct {
+	QueueStruct* top;
+} StackStruct;
 
- void Enqueue(QueueStruct* Queue, int count, char name[])
- {
-	 QNode* newNode = (QNode*)malloc(sizeof(QNode));
-	 newNode -> count = count;
-	 newNode -> name = (char*)malloc(sizeof(strlen(name) + 1));
-	 strcpy(newNode -> name, name);
-	 newNode -> next = NULL;
-	 if(Queue -> rear == NULL)
-	 {
-		 Queue -> front = newNode;
-		 Queue -> rear = newNode;
-	 }
-	 else
-	 {
-		 Queue -> rear -> next = newNode;
-		 Queue -> rear = newNode;
-	 }
- }	
+StackStruct* Stack;
 
- void Dequeue()
- {
-	 Node* temp = Queue -> front;
-	 printf("Taxi departs with %s and their party of %i\n", temp -> name, temp -> count);
-	 Queue -> front = Queue -> front -> next;
-	 if(Queue -> front == NULL)
-	 {
-		 Queue -> rear = NULL;
-	 }
-    free(temp->name);  
-	 free(temp);
- }
 
- void pushStack()
- {
-
- }
-
- void popStack()
- {
-
- }
-
-void taxiArrival()
+// Adds a new party to the queue on top of the stack
+void Enqueue(int count, char name[])
 {
-	if(Queue -> front != NULL)
+	QueueStruct* Queue = Stack -> top;
+	QNode* newNode = (QNode*)malloc(sizeof(QNode));
+	newNode -> count = count;
+	newNode -> name = (char*)malloc(sizeof(strlen(name) + 1));
+	strcpy(newNode -> name, name);
+	newNode -> next = NULL;
+	if(Queue -> rear == NULL)
 	{
-		Dequeue();
+		Queue -> front = newNode;
+		Queue -> rear = newNode;
 	}
 	else
 	{
+		Queue -> rear -> next = newNode;
+		Queue -> rear = newNode;
+	}
+	printf("Accepted\n");
+}	
+
+//Pops the queue off from the stack
+void Pop()
+{
+	QueueStruct* temp = Stack -> top;
+	Stack -> top = Stack -> top -> next;
+
+	free(temp);
+}
+
+// Removes a party from the front of the queue on top of the stack
+void Dequeue()
+{
+	QueueStruct* Queue = Stack -> top;
+	QNode* temp = Queue -> front;
+	printf("Taxi departs with %s and their party of %i\n", temp -> name, temp -> count);
+	Queue -> front = Queue -> front -> next;
+	if(Queue -> front == NULL)
+	{
+		Pop();
+	}
+   free(temp->name);  
+   free(temp);
+}
+
+// Adds a new queue to the stack
+void Push(StackStruct* Stack,int rank, int count, char name[])
+{
+	QueueStruct* newQueue = (QueueStruct*)malloc(sizeof(QueueStruct));
+	newQueue -> front = NULL;
+	newQueue -> rear = NULL;
+	newQueue -> next = Stack -> top;
+	newQueue -> rank = rank;
+	Stack -> top = newQueue;
+	Enqueue(count, name);
+}
+
+ // Handle an arrival of a taxi. 
+void taxiArrival()
+{
+	QueueStruct* Queue = Stack -> top;
+	if (Queue == NULL)
+	{
 		printf("Empty Queue\n");
 	}
+	else
+	{
+		Dequeue();
+	}
 }
- 
- /* Handles an arrival of a new party.
-  * Arguments:
-  * 		rank 		- the status of the party assumed to be one of 1, 2, 3, 4, 5
-  *			count		- the number of people in the party
-  *			name 		- the name of the party
-  */
 
+//handle an arrival of a party.
 void partyArrival(int rank, int count, char name[])
 {
-	if(rank > highestRank)
+	QueueStruct* Queue = Stack -> top;
+	if (Queue == NULL || Queue -> rank < rank)
 	{
-		highestRank = rank;
-		pushStack(rank, count, name);
+		Push(Stack, rank, count, name);
 	}
-	if(rank == highestRank)
+	else if (Queue -> rank == rank)
 	{
 		Enqueue(count, name);
 	}
 	else
 	{
-		printf("Rejected\n")
+		printf("Rejected\n");
 	}
+	
 }	
-
-
 
 /* Free the contents of the datastructures used */
 void freeAll()
 {
-	// ************** Please change the code below to your code **************
-	printf("Please add your code to free all datastructures.\n");
+    while (Stack->top != NULL)
+    {
+        QueueStruct* currentQueue = Stack->top;
+        
+        // Free all nodes in the current queue
+        while (currentQueue->front != NULL)
+        {
+            QNode* temp = currentQueue->front;
+            currentQueue->front = currentQueue->front->next;
+            free(temp->name);
+            free(temp);
+        }
+        
+        // Remove the queue from the stack
+        Stack->top = Stack->top->next;
+        free(currentQueue);
+    }
+    
+    // Free the stack itself
+    free(Stack);
 }
 
 
@@ -119,8 +157,11 @@ void freeAll()
  */
 int main(int argc, char* argv[])
 {
+	Stack = (StackStruct*)malloc(sizeof(StackStruct));
+	Stack->top = NULL;
+
  	int timesteps; // The total number of timesteps
- 	char input[10]; // For the input prefix "Taxi" or "Party"
+ 	char input[25]; // For the input prefix "Taxi" or "Party"
  	char name[25]; // The party name
  	int rank; // The party's status
  	int count; // The number of people in the party
