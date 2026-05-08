@@ -1,0 +1,63 @@
+62
+A
+Add B A
+Add C A
+Add D B
+Add E B
+Add F C
+Add G C
+Add H D
+Add I D
+Add J E
+Descendant A
+Descendant B
+Descendant D
+Descendant J
+Descendant Z
+Max
+Add K A
+Add L A
+Add M A
+Add N A
+Add O A
+Add P A
+Add Q A
+Add R A
+Add S A
+Add T A
+Add U H
+Add V U
+Add W V
+Max
+Descendant H
+Descendant U
+Descendant A
+Add X I
+Add Y I
+Add Z I
+Add AA I
+Add BB I
+Add CC I
+Add DD I
+Add EE I
+Add FF I
+Add GG I
+Add HH I
+Descendant I
+Add II J
+Add JJ J
+Add KK J
+Add LL J
+Add MM J
+Add NN J
+Add OO J
+Add PP J
+Add QQ J
+Add RR J
+Add SS J
+Descendant J
+Max
+Add WW W
+Max
+Descendant V
+Descendant W
