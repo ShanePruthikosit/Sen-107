@@ -128,7 +128,7 @@ void printChains(Node* n, char path[][25], int len, int target)
 		printf("\n");
 		return;
 	}
-	for (i = 0; i < n->numChildren; i++)
+	for (int i = 0; i < n->numChildren; i++)
 	{
 		if ((height(n->children[i]) + len) == target)
 		{
