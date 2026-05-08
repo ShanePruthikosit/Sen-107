@@ -29,9 +29,36 @@ Node* root = NULL; //root of the tree
 Node* createNode(char* name)
 {
 	Node* n = (Node*)malloc(sizeof(Node)); //new node
+	if (n == NULL)
+	{
+		printf("Memory allocation failed\n");
+		exit(1);
+	}
 	strcpy(n->name, name);
 	n->numChildren = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		n->children[i] = NULL;
+	}
 	return n;
+}
+
+/* 
+ * Recursively free all nodes in the subtree rooted at n.
+ * Arguments:
+ *   n - the root of the subtree to free
+ */
+void freeTree(Node* n)
+{
+	if (n == NULL)
+	{
+		return;
+	}
+	for (int i = 0; i < n->numChildren; i++)
+	{
+		freeTree(n->children[i]);
+	}
+	free(n);
 }
 
 /* 
@@ -86,11 +113,16 @@ void printAll(Node* n, int* first)
  * Compute the height of the subtree rooted at n.
  * Arguments:
  *   n - the root of the subtree
- * Returns the height (number of nodes on longest path).
+ * Returns the height (number of nodes on longest path),
+ *   or 0 if n is NULL.
  */
 int height(Node* n)
 {
-	int max = 0; //max child len
+	if (n == NULL)
+	{
+		return 0;
+	}
+	int max = 0; //max child height
 	int h = 0;   //current child height
 	for (int i = 0; i < n->numChildren; i++)
 	{
@@ -149,8 +181,9 @@ void addRoot(char* name)
  */
 void addNonRoot(char* name, char* motherName)
 {
-	Node* mom = findNode(root, motherName); /* mother node */
-	if ((mom == NULL) || (mom->numChildren >= 10))
+	Node* mom = findNode(root, motherName); //mother node
+	Node* dup = findNode(root, name); //check for duplicate
+	if ((mom == NULL) || (mom->numChildren >= 10) || (dup != NULL))
 	{
 		printf("Unsuccessful\n");
 		return;
@@ -163,8 +196,13 @@ void addNonRoot(char* name, char* motherName)
  */
 void queryDescendant(char* name)
 {
-	Node* p = findNode(root, name); 
-	int first = 1;                  
+	if (root == NULL)
+	{
+		printf("Not Found\n");
+		return;
+	}
+	Node* p = findNode(root, name); //person node
+	int first = 1;                  //flag for spacing
 	if ((p == NULL) || (p->numChildren == 0))
 	{
 		printf("Not Found\n");
@@ -178,8 +216,19 @@ void queryDescendant(char* name)
  */
 void queryLongestDescendantChain()
 {
-	char path[500][25]; 
-	printChains(root, path, 0, height(root));
+	if (root == NULL)
+	{
+		return;
+	}
+	int maxDepth = height(root); //longest chain length
+	char (*path)[25] = malloc(maxDepth * sizeof(*path)); //dynamic path array
+	if (path == NULL)
+	{
+		printf("Memory allocation failed\n");
+		return;
+	}
+	printChains(root, path, 0, maxDepth);
+	free(path);
 }
 
 
@@ -190,19 +239,19 @@ int main()
 	char motherName[25]; // The name of a woman's mother
 	int numOperations; // The number of operations.
 	scanf("%d", &numOperations);
-	scanf("\n%s", name);
+	scanf("\n%24s", name);
 	addRoot(name);
 	for (int i = 1 ; i < numOperations ; i ++)
 	{
-		scanf("\n%s", input);
+		scanf("\n%63s", input);
 		if (strcmp(input, "Add") == 0)
 		{
-			scanf(" %s %s", name, motherName);
+			scanf(" %24s %24s", name, motherName);
 			addNonRoot(name, motherName);
 		}
 		else if (strcmp(input, "Descendant") == 0)
 		{
-			scanf(" %s", name);
+			scanf(" %24s", name);
 			queryDescendant(name);
 		}
 		else
@@ -210,4 +259,6 @@ int main()
 			queryLongestDescendantChain();
 		}
 	}
+	freeTree(root);
+	return 0;
 }
