@@ -163,8 +163,8 @@ void addNonRoot(char* name, char* motherName)
  */
 void queryDescendant(char* name)
 {
-	Node* p = findNode(root, name); /* person node */
-	int first = 1;                  /* flag for spacing */
+	Node* p = findNode(root, name); 
+	int first = 1;                  
 	if ((p == NULL) || (p->numChildren == 0))
 	{
 		printf("Not Found\n");
@@ -178,7 +178,7 @@ void queryDescendant(char* name)
  */
 void queryLongestDescendantChain()
 {
-	char path[500][25]; /* array to store current chain */
+	char path[500][25]; 
 	printChains(root, path, 0, height(root));
 }
 
@@ -187,7 +187,7 @@ int main()
 {
 	char input[64]; // Input operation name
 	char name[25]; // The name of the woman
-	char motherName[25]; // The number of woman's mother
+	char motherName[25]; // The name of a woman's mother
 	int numOperations; // The number of operations.
 	scanf("%d", &numOperations);
 	scanf("\n%s", name);
