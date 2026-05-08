@@ -1,12 +1,12 @@
-/* 
- * matrilinealDescendant.c
- * 
- * Build a simple, non-sorted tree of mother-daughter relationships.
- * Supports adding nodes, querying all descendants of a person,
- * and finding the longest chain of descendants.
- *
- * Created by [Your Name], [Date]
- */
+/* matrilineal
+*
+* Build a simple, non-sorted tree of mother-daughter relationships
+*
+* Template for Fundamental Data Structures Lab 2
+* Created by Pasin Manurangsi, 2025-01-08
+* altered by Sunidhi Pruthikosit, 2026-02-05
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
