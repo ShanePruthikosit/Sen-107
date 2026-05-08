@@ -7,12 +7,74 @@
  #include <stdlib.h>
  #include <string.h>
 
- /* Handle an arrival of a taxi. 
-  */
+//node structure
+ typedef struct QNode{
+    char* name;
+	int count;
+	struct QNode* next;
+} QNode;
+
+//Queue structure
+typedef struct {
+	QNode* front;
+	QNode* rear;
+	QueueStruct* nextQueue;
+} QueueStruct;
+
+int highestRank; 
+
+ void Enqueue(QueueStruct* Queue, int count, char name[])
+ {
+	 QNode* newNode = (QNode*)malloc(sizeof(QNode));
+	 newNode -> count = count;
+	 newNode -> name = (char*)malloc(sizeof(strlen(name) + 1));
+	 strcpy(newNode -> name, name);
+	 newNode -> next = NULL;
+	 if(Queue -> rear == NULL)
+	 {
+		 Queue -> front = newNode;
+		 Queue -> rear = newNode;
+	 }
+	 else
+	 {
+		 Queue -> rear -> next = newNode;
+		 Queue -> rear = newNode;
+	 }
+ }	
+
+ void Dequeue()
+ {
+	 Node* temp = Queue -> front;
+	 printf("Taxi departs with %s and their party of %i\n", temp -> name, temp -> count);
+	 Queue -> front = Queue -> front -> next;
+	 if(Queue -> front == NULL)
+	 {
+		 Queue -> rear = NULL;
+	 }
+    free(temp->name);  
+	 free(temp);
+ }
+
+ void pushStack()
+ {
+
+ }
+
+ void popStack()
+ {
+
+ }
+
 void taxiArrival()
 {
-	// ************** Please change the code below to your code **************
- 	printf("Please add your code to handle taxi arrival.\n");
+	if(Queue -> front != NULL)
+	{
+		Dequeue();
+	}
+	else
+	{
+		printf("Empty Queue\n");
+	}
 }
  
  /* Handles an arrival of a new party.
@@ -21,11 +83,25 @@ void taxiArrival()
   *			count		- the number of people in the party
   *			name 		- the name of the party
   */
+
 void partyArrival(int rank, int count, char name[])
 {
-	// ************** Please change the code below to your code **************
- 	printf("Please add your code to handle party arrival.\n");
+	if(rank > highestRank)
+	{
+		highestRank = rank;
+		pushStack(rank, count, name);
+	}
+	if(rank == highestRank)
+	{
+		Enqueue(count, name);
+	}
+	else
+	{
+		printf("Rejected\n")
+	}
 }	
+
+
 
 /* Free the contents of the datastructures used */
 void freeAll()
@@ -33,6 +109,10 @@ void freeAll()
 	// ************** Please change the code below to your code **************
 	printf("Please add your code to free all datastructures.\n");
 }
+
+
+
+
 
 /* Main function loops for however many timesteps is specified, 
  * reading from the standard input and handling taxi / party arrivals
