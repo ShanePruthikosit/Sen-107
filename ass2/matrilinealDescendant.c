@@ -1,9 +1,11 @@
-/* matrilineal
+/* 
+ * matrilinealDescendant.c
  * 
- * Build a simple, non-sorted tree of mother-daughter relationships
+ * Build a simple, non-sorted tree of mother-daughter relationships.
+ * Supports adding nodes, querying all descendants of a person,
+ * and finding the longest chain of descendants.
  *
- *  Template for Fundamental Data Structures Lab 2
- *  Created by Pasin Manurangsi, 2025-01-08
+ * Created by [Your Name], [Date]
  */
 #include <stdio.h>
 #include <string.h>
@@ -11,55 +13,104 @@
 
 typedef struct Node
 {
-	char name[25];
-	struct Node* children[10];
-	int numChildren;
+	char name[25];           /* name of the person */
+	struct Node* children[10]; /* pointers to daughter nodes */
+	int numChildren;         /* number of daughters */
 } Node;
 
-Node* root = NULL;
+Node* root = NULL; /* root of the tree */
 
+/* 
+ * Create a new node with the given name.
+ * Arguments:
+ *   name - the name of the person to create
+ * Returns a pointer to the newly created node.
+ */
 Node* createNode(char* name)
 {
-	Node* n = (Node*)malloc(sizeof(Node));
+	Node* n = (Node*)malloc(sizeof(Node)); /* new node */
 	strcpy(n->name, name);
 	n->numChildren = 0;
 	return n;
 }
 
+/* 
+ * Search the subtree rooted at cur for a node matching name.
+ * Arguments:
+ *   cur  - the current node being searched
+ *   name - the name to search for
+ * Returns a pointer to the matching node, or NULL if not found.
+ */
 Node* findNode(Node* cur, char* name)
 {
-	if (cur == NULL) return NULL;
-	if (strcmp(cur->name, name) == 0) return cur;
+	if (cur == NULL)
+	{
+		return NULL;
+	}
+	if (strcmp(cur->name, name) == 0)
+	{
+		return cur;
+	}
 	for (int i = 0; i < cur->numChildren; i++)
 	{
-		Node* r = findNode(cur->children[i], name);
-		if (r != NULL) return r;
+		Node* r = findNode(cur->children[i], name); /* result */
+		if (r != NULL)
+		{
+			return r;
+		}
 	}
 	return NULL;
 }
 
+/* 
+ * Recursively print all descendants of a node.
+ * Arguments:
+ *   n     - the current node
+ *   first - pointer to flag tracking if first name printed
+ */
 void printAll(Node* n, int* first)
 {
 	for (int i = 0; i < n->numChildren; i++)
 	{
-		if (!(*first)) printf(" ");
+		if (!(*first))
+		{
+			printf(" ");
+		}
 		*first = 0;
 		printf("%s", n->children[i]->name);
 		printAll(n->children[i], first);
 	}
 }
 
+/* 
+ * Compute the height of the subtree rooted at n.
+ * Arguments:
+ *   n - the root of the subtree
+ * Returns the height (number of nodes on longest path).
+ */
 int height(Node* n)
 {
-	int max = 0;
+	int max = 0; /* maximum child height */
+	int h = 0;   /* current child height */
 	for (int i = 0; i < n->numChildren; i++)
 	{
-		int h = height(n->children[i]);
-		if (h > max) max = h;
+		h = height(n->children[i]);
+		if (h > max)
+		{
+			max = h;
+		}
 	}
 	return max + 1;
 }
 
+/* 
+ * Recursively print all root-to-leaf chains of a given length.
+ * Arguments:
+ *   n      - the current node
+ *   path   - array storing the current chain of names
+ *   len    - current length of the chain
+ *   target - the target chain length
+ */
 void printChains(Node* n, char path[][25], int len, int target)
 {
 	strcpy(path[len], n->name);
@@ -68,16 +119,21 @@ void printChains(Node* n, char path[][25], int len, int target)
 	{
 		for (int i = 0; i < len; i++)
 		{
-			if (i > 0) printf(" ");
+			if (i > 0)
+			{
+				printf(" ");
+			}
 			printf("%s", path[i]);
 		}
 		printf("\n");
 		return;
 	}
-	for (int i = 0; i < n->numChildren; i++)
+	for (i = 0; i < n->numChildren; i++)
 	{
-		if (height(n->children[i]) + len == target)
+		if ((height(n->children[i]) + len) == target)
+		{
 			printChains(n->children[i], path, len, target);
+		}
 	}
 }
 
@@ -86,15 +142,15 @@ void printChains(Node* n, char path[][25], int len, int target)
 void addRoot(char* name)
 {
 	root = createNode(name);
-	printf("Added \n");
+	printf("Added\n");
 }
 
 /* Adds person with a given name and mother's name to the tree.
  */
 void addNonRoot(char* name, char* motherName)
 {
-	Node* mom = findNode(root, motherName);
-	if (mom == NULL || mom->numChildren >= 10)
+	Node* mom = findNode(root, motherName); /* mother node */
+	if ((mom == NULL) || (mom->numChildren >= 10))
 	{
 		printf("Unsuccessful\n");
 		return;
@@ -103,17 +159,17 @@ void addNonRoot(char* name, char* motherName)
 	printf("Added\n");
 }
 
-/* Prints the person's daughters.
+/* Prints the person's descendants.
  */
 void queryDescendant(char* name)
 {
-	Node* p = findNode(root, name);
-	if (p == NULL || p->numChildren == 0)
+	Node* p = findNode(root, name); /* person node */
+	int first = 1;                  /* flag for spacing */
+	if ((p == NULL) || (p->numChildren == 0))
 	{
 		printf("Not Found\n");
 		return;
 	}
-	int first = 1;
 	printAll(p, &first);
 	printf("\n");
 }
@@ -122,7 +178,7 @@ void queryDescendant(char* name)
  */
 void queryLongestDescendantChain()
 {
-	char path[500][25];
+	char path[500][25]; /* array to store current chain */
 	printChains(root, path, 0, height(root));
 }
 
