@@ -13,12 +13,12 @@
 
 typedef struct Node
 {
-	char name[25];           /* name of the person */
-	struct Node* children[10]; /* pointers to daughter nodes */
-	int numChildren;         /* number of daughters */
+	char name[25];           //name of person
+	struct Node* children[10]; //pointers to daughters
+	int numChildren;         //number of daughters
 } Node;
 
-Node* root = NULL; /* root of the tree */
+Node* root = NULL; //root of the tree
 
 /* 
  * Create a new node with the given name.
@@ -28,7 +28,7 @@ Node* root = NULL; /* root of the tree */
  */
 Node* createNode(char* name)
 {
-	Node* n = (Node*)malloc(sizeof(Node)); /* new node */
+	Node* n = (Node*)malloc(sizeof(Node)); //new node
 	strcpy(n->name, name);
 	n->numChildren = 0;
 	return n;
@@ -53,7 +53,7 @@ Node* findNode(Node* cur, char* name)
 	}
 	for (int i = 0; i < cur->numChildren; i++)
 	{
-		Node* r = findNode(cur->children[i], name); /* result */
+		Node* r = findNode(cur->children[i], name); 
 		if (r != NULL)
 		{
 			return r;
@@ -90,8 +90,8 @@ void printAll(Node* n, int* first)
  */
 int height(Node* n)
 {
-	int max = 0; /* maximum child height */
-	int h = 0;   /* current child height */
+	int max = 0; //max child len
+	int h = 0;   //current child height
 	for (int i = 0; i < n->numChildren; i++)
 	{
 		h = height(n->children[i]);
