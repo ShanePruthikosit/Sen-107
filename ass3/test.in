@@ -1,21 +1,30 @@
-14
-5
-Alice 1000001 CEO -- --
+20
+8
 Bob 1000002 VP Alice 1000001
-Charlie 1000003 Manager Bob 1000002
+Alice 1000001 CEO -- --
+Charlie 1000003 Manager Alice 1000001
 Dave 1000004 Dev Charlie 1000003
 Eve 1000005 Intern Dave 1000004
-Frank 1000006 Director Alice 1000001
-Ghost 1000007 Analyst Nobody 9999999
-Alice 1000008 Clerk Frank 1000006
-Zara 1000009 Tester Charlie 1000003
+Frank 1000006 Intern Dave 1000004
+Grace 1000007 Director Alice 1000001
+Hank 1000008 Analyst Nobody 9999999
+Alice 1000009 Clerk Grace 1000007
+Bob1 234 Tester Charlie 1000003
+Bob 1234 Admin Grace 1000007
+Alice 1000001 CEO -- --
 NewBoss 1000010 CEO -- --
-Bob 1000011 Admin Frank 1000006
-Bad 1000012 Staff Ghost 1000007
-Kate 1000013 Lead Bob 1000002
-Kate 1000014 Junior Frank 1000006
+Kate 1000011 Lead Charlie 1000003
+Zara 1000012 Junior Eve 1000005
+Bad1 1000013 Staff Hank 1000008
+Mike 1000014 Staff NewBoss 1000010
+Mike 1000014 Dev Charlie 1000003
+Sam 1000015 Ops Bad1 1000013
+Lisa 1000016 HR Mike 1000014
 NewBoss 1000010
-Eve 1000005
-Nobody 9999999
-Bob 1000011
+Alice 1000001
 Charlie 1000003
+Zara 1000012
+Nobody 9999999
+Mike 1000014
+Lisa 1000016
+Bob 1234
