@@ -1,0 +1,69 @@
+68
+New alice@test.com Alice Smith
+New bob@test.com Bob Jones
+New carol@test.com Carol White
+New dave@test.com Dave Brown
+New eve@test.com Eve Green
+New alice@test.com Alice Duplicate
+New bob@test.com Bob Duplicate
+Friend alice@test.com
+Suggestion alice@test.com
+Add alice@test.com bob@test.com
+Add alice@test.com carol@test.com
+Add bob@test.com carol@test.com
+Add bob@test.com dave@test.com
+Add carol@test.com eve@test.com
+Friend alice@test.com
+Friend bob@test.com
+Suggestion alice@test.com
+Add alice@test.com alice@test.com
+Add alice@test.com bob@test.com
+Add alice@test.com nobody@test.com
+Add nobody@test.com alice@test.com
+Add nobody@test.com nobody2@test.com
+Unfriend alice@test.com alice@test.com
+Unfriend alice@test.com dave@test.com
+Unfriend alice@test.com nobody@test.com
+Unfriend nobody@test.com alice@test.com
+Unfriend nobody@test.com nobody2@test.com
+Unfriend alice@test.com bob@test.com
+Friend alice@test.com
+Suggestion alice@test.com
+Add alice@test.com bob@test.com
+Friend alice@test.com
+Delete nobody@test.com
+Delete alice@test.com
+Friend alice@test.com
+Add alice@test.com bob@test.com
+Suggestion alice@test.com
+Friend bob@test.com
+Suggestion bob@test.com
+New alice@test.com Alice Reborn
+Friend alice@test.com
+Suggestion alice@test.com
+Add alice@test.com bob@test.com
+Friend alice@test.com
+Friend bob@test.com
+Suggestion alice@test.com
+Suggestion bob@test.com
+Delete bob@test.com
+Delete carol@test.com
+Delete dave@test.com
+Delete eve@test.com
+Delete alice@test.com
+Delete alice@test.com
+Friend alice@test.com
+Suggestion alice@test.com
+New a@t.com A B
+New b@t.com B C
+New c@t.com C D
+Add a@t.com b@t.com
+Add b@t.com c@t.com
+Suggestion a@t.com
+Suggestion c@t.com
+Unfriend a@t.com b@t.com
+Unfriend b@t.com c@t.com
+Suggestion a@t.com
+Friend a@t.com
+Friend b@t.com
+Friend c@t.com

@@ -37,14 +37,14 @@ Account *hashTable[HASH_SIZE]; /* hash table for account lookup */
  */
 unsigned int hashFunction(char *str)
 {
-	unsigned int hash = 5381; /* initial value for djb2 algorithm */
-	int c = 0;                /* current character */
+	unsigned int hash = 0; /* accumulated hash value */
+	int i = 0;             /* loop variable */
 
-	while ((c = *str++) != 0)
+	for (i = 0; str[i] != '\0'; i++)
 	{
-		hash = ((hash << 5) + hash) + c;
+		hash = (hash * 27 + (unsigned int)str[i]) % HASH_SIZE;
 	}
-	return hash % HASH_SIZE;
+	return hash;
 }
 
 /* Look up an account by email address.
